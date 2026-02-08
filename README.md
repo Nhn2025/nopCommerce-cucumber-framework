@@ -31,7 +31,7 @@ Make sure you have installed:
 
 ##  Install Dependencies
 
-All dependencies are defined in `pom.xml`.
+All dependencies are defined in `pom.xml`
 
 Run the following command:
 
