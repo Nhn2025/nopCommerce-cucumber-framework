@@ -1,8 +1,6 @@
 package pageUIs;
 
-import commons.BasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 public class LoginPageUI {
     public static final By btnHeaderLogin = By.className("ico-login");

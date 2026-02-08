@@ -1,20 +1,19 @@
 package stepDefinitions;
 
-import commons.DriverFactory;
+import commons.BaseTest;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import org.openqa.selenium.WebDriver;
 
-public class Hooks {
-    public static WebDriver driver;
+public class Hooks extends BaseTest {
 
-    @Before
-    public void beforeScenario(){
-        driver = DriverFactory.getDriver("chrome");
+    @Before(order = 0)
+    public void beforeScenario() {
+        setUp();
     }
 
-    @After
-    public void afterScenario(){
-        driver.quit();
+    @After(order = 0)
+    public void afterScenario() {
+        tearDown();
     }
+
 }

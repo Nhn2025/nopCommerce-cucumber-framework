@@ -7,7 +7,7 @@ import pageUIs.LoginPageUI;
 public class LoginPage extends BasePage {
 
     public LoginPage(WebDriver driver){
-        super(driver); // truyền driver lên BasePage
+        super(driver);
     }
 
     public void clickHeaderLogin(){

@@ -1,27 +1,45 @@
 package commons;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class DriverFactory {
 
-    public static WebDriver getDriver(String browserName) {
-        WebDriver driver;
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-        switch (browserName.toLowerCase()) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments("--start-maximized");
-                driver = new ChromeDriver(options);
-                break;
+    public static void initDriver() {
+        String browser = System.getProperty("browser");
 
-            default:
-                throw new RuntimeException("Browser not supported: " + browserName);
+        if (browser == null) {
+            browser = ConfigReader.getBrowser();
         }
 
-        return driver;
+        switch (browser.toLowerCase()) {
+            case "firefox":
+                FirefoxOptions ffOptions = new FirefoxOptions();
+                ffOptions.addArguments("--start-maximized");
+                driver.set(new FirefoxDriver(ffOptions));
+                break;
+            default:
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--remote-allow-origins=*");
+                driver.set(new ChromeDriver(options));
+        }
+
+        getDriver().manage().window().maximize();
+    }
+
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
+
+    public static void quitDriver() {
+        if (driver.get() != null) {
+            driver.get().quit();
+            driver.remove();
+        }
     }
 }

@@ -14,6 +14,7 @@ public class BasePage {
     }
 
     protected WebElement getElement(By locator){
+        waitForElementVisible(locator);
         return driver.findElement(locator);
     }
 
