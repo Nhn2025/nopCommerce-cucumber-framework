@@ -1,45 +1,52 @@
 package commons;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.*;
+import org.openqa.selenium.firefox.*;
+
+import java.time.Duration;
 
 public class DriverFactory {
 
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    public static WebDriver initDriver() {
 
-    public static void initDriver() {
-        String browser = System.getProperty("browser");
+        String browser = System.getProperty("browser", ConfigReader.getBrowser());
+        Log.info("========== START BROWSER: " + browser + " ==========");
 
-        if (browser == null) {
-            browser = ConfigReader.getBrowser();
-        }
+        WebDriver driver;
 
         switch (browser.toLowerCase()) {
+
             case "firefox":
                 FirefoxOptions ffOptions = new FirefoxOptions();
                 ffOptions.addArguments("--start-maximized");
-                driver.set(new FirefoxDriver(ffOptions));
+                driver = new FirefoxDriver(ffOptions);
                 break;
+
+            case "chrome-headless":
+                ChromeOptions headlessOptions = new ChromeOptions();
+                headlessOptions.addArguments("--headless=new");
+                headlessOptions.addArguments("--window-size=1920,1080");
+                driver = new ChromeDriver(headlessOptions);
+                break;
+
             default:
                 ChromeOptions options = new ChromeOptions();
                 options.addArguments("--remote-allow-origins=*");
-                driver.set(new ChromeDriver(options));
+                options.addArguments("--start-maximized");
+                driver = new ChromeDriver(options);
+                break;
         }
 
-        getDriver().manage().window().maximize();
+        configureTimeouts(driver);
+
+        return driver;
     }
 
-    public static WebDriver getDriver() {
-        return driver.get();
-    }
-
-    public static void quitDriver() {
-        if (driver.get() != null) {
-            driver.get().quit();
-            driver.remove();
-        }
+    private static void configureTimeouts(WebDriver driver) {
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
+        driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
     }
 }

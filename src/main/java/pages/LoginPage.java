@@ -1,6 +1,7 @@
 package pages;
 
 import commons.BasePage;
+import commons.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import pageUIs.LoginPageUI;
 
@@ -11,12 +12,16 @@ public class LoginPage extends BasePage {
     }
 
     public void clickHeaderLogin(){
-        clickToElement(LoginPageUI.btnHeaderLogin);
+        clickToElement(LoginPageUI.HEADER_LOGIN_LINK);
     }
 
-    public void login(String email, String pass){
-        sendKeyToElement(LoginPageUI.txtEmail, email);
-        sendKeyToElement(LoginPageUI.txtPassword, pass);
-        clickToElement(LoginPageUI.btnSubmitLogin);
+    public void openBaseUrl(){
+        openPageUrl(ConfigReader.getBaseUrl());
+    }
+
+    public void login(String emailId, String email, String passId, String pass){
+        sendKeyToElement(LoginPageUI.DYNAMIC_TEXTBOX_BY_ID, email, emailId);
+        sendKeyToElement(LoginPageUI.DYNAMIC_TEXTBOX_BY_ID, pass, passId);
+        clickToElement(LoginPageUI.LOGIN_BUTTON);
     }
 }

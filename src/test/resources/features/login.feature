@@ -1,6 +1,6 @@
 Feature: Login
 
-  Scenario: Login successful
+  Scenario: User can login with valid credentials
     Given User open login page
-    When User login with "dnhu12@gmail.com" and "dnhu12@gmail.com"
+    When User login "Email" and "Password" as "validUser"
     Then User can navigate to Dashboard page

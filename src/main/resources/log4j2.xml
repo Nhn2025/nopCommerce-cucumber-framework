@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Properties>
+        <Property name="logDir">src/main/logs</Property>
+        <Property name="pattern">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c{1} - %msg%n
+        </Property>
+        <Property name="logFileName">${sys:logFilename:-execution}</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!-- Console -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+
+        <!-- Rolling File -->
+        <RollingFile name="FileLogger"
+                     fileName="${logDir}/${logFileName}"
+                     filePattern="${logDir}/${logFileName}-%d{yyyy-MM-dd}-%i.log.gz">
+
+            <PatternLayout pattern="${pattern}"/>
+
+            <Policies>
+                <!-- Tạo file mới mỗi ngày -->
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <!-- Hoặc khi file > 10MB -->
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <!-- Log framework -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
