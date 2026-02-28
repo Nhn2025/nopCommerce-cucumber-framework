@@ -1,7 +1,7 @@
 {
   "validUser": {
-    "email": "dnhu12@gmail.com",
-    "password": "dnhu2@gmail.com"
+    "email": "dnhu123@gmail.com",
+    "password": "12345678"
   },
   "invalidUser": {
     "email": "abc@gmail.com",

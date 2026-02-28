@@ -5,8 +5,10 @@ import commons.DriverFactory;
 import commons.DriverManager;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 
 public class Hooks {
 
@@ -21,10 +23,15 @@ public class Hooks {
     }
 
     @After(order = 1)
-    public void attachScreenshot(io.cucumber.java.Scenario scenario) {
-        if (scenario.isFailed()) {
-            byte[] screenshot = ((TakesScreenshot) DriverManager.getDriver())
+    public void attachScreenshot(Scenario scenario) {
+
+        WebDriver driver = DriverManager.getDriver();
+
+        if (scenario.isFailed() && driver != null) {
+
+            byte[] screenshot = ((TakesScreenshot) driver)
                     .getScreenshotAs(OutputType.BYTES);
+
             scenario.attach(screenshot, "image/png", "Failed Screenshot");
         }
     }
