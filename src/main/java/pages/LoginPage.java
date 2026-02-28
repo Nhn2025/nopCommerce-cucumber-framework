@@ -15,8 +15,15 @@ public class LoginPage extends BasePage {
         clickToElement(LoginPageUI.HEADER_LOGIN_LINK);
     }
 
-    public void openBaseUrl(){
-        openPageUrl(ConfigReader.getBaseUrl());
+    public void openBaseUrl() {
+
+        String baseUrl = ConfigReader.getBaseUrl();
+        System.out.println("Base URL from config: " + baseUrl);
+
+        driver.get(baseUrl);
+
+        System.out.println("Current URL after open: " + driver.getCurrentUrl());
+        System.out.println("Title after open: " + driver.getTitle());
     }
 
     public void login(String emailId, String email, String passId, String pass){
