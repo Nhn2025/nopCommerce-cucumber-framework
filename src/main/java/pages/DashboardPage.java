@@ -11,6 +11,6 @@ public class DashboardPage extends BasePage {
     }
 
     public boolean verifyNavigateToDashboard(){
-        return isElementEnabled(DashboardPageUI.MY_ACCOUNT_BUTTON);
+        return isElementEnabled(DashboardPageUI.LIST_PRODUCT);
     }
 }

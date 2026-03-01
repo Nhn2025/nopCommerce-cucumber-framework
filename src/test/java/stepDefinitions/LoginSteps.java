@@ -24,13 +24,12 @@ public class LoginSteps {
         dashboardPage = PageGenerator.getDashboardPage(driver);
 
         loginPage.openBaseUrl();
-        loginPage.clickHeaderLogin();
     }
 
     @When("User login {string} and {string} as {string}")
-    public void userLogin(String emailId, String passId, String validUser) {
+    public void userLogin(String usernameId, String passId, String validUser) {
         user = TestDataReader.getUser(validUser);
-        loginPage.login(emailId, user.email, passId, user.password);
+        loginPage.login(usernameId, user.email, passId, user.password);
     }
 
     @Then("User can navigate to Dashboard page")

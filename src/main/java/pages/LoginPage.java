@@ -11,23 +11,13 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public void clickHeaderLogin(){
-        clickToElement(LoginPageUI.HEADER_LOGIN_LINK);
-    }
-
     public void openBaseUrl() {
-
         String baseUrl = ConfigReader.getBaseUrl();
-        System.out.println("Base URL from config: " + baseUrl);
-
         driver.get(baseUrl);
-
-        System.out.println("Current URL after open: " + driver.getCurrentUrl());
-        System.out.println("Title after open: " + driver.getTitle());
     }
 
-    public void login(String emailId, String email, String passId, String pass){
-        sendKeyToElement(LoginPageUI.DYNAMIC_TEXTBOX_BY_ID, email, emailId);
+    public void login(String usernameId, String username, String passId, String pass){
+        sendKeyToElement(LoginPageUI.DYNAMIC_TEXTBOX_BY_ID, username, usernameId);
         sendKeyToElement(LoginPageUI.DYNAMIC_TEXTBOX_BY_ID, pass, passId);
         clickToElement(LoginPageUI.LOGIN_BUTTON);
     }
