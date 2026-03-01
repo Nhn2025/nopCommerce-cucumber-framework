@@ -2,9 +2,7 @@ name: Run Tests & Publish Allure Report
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main, master ]
   pull_request:
     branches: [ main ]
 
@@ -23,28 +21,19 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Install Allure
-        run: |
-          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
-          tar -zxvf allure-2.24.0.tgz
-          sudo mv allure-2.24.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-
-      - name: Run tests
+      - name: Run Tests
         run: mvn clean test
-        continue-on-error: true   # 🔥 QUAN TRỌNG
+        continue-on-error: true
 
-      - name: List target folder (debug)
+      - name: Generate Allure Report & Publish to GitHub Pages
         if: always()
-        run: ls -R target || true
-
-      - name: Generate Allure report
-        if: always()              # 🔥 QUAN TRỌNG
-        run: allure generate target/allure-results --clean -o target/allure-report || true
-
-      - name: Upload report as artifact
-        if: always()              # 🔥 QUAN TRỌNG
-        uses: actions/upload-artifact@v4
+        uses: simple-elf/allure-report-action@v1.7
         with:
-          name: allure-report
-          path: target/allure-report
+          allure_results: target/allure-results
+          allure_history: allure-history
+          gh_pages: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail build if tests failed
+        if: failure()
+        run: exit 1
